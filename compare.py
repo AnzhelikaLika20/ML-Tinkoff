@@ -1,7 +1,5 @@
 import sys
 import ast
-import random
-import os
 
 
 def levenshtein_distance(code1, code2):
