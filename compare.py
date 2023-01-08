@@ -72,10 +72,20 @@ with open(sys.argv[1], "r") as input_file, open(sys.argv[2], "w") as output_file
         paths = paths.split()
         file1 = paths[0]
         file2 = paths[1]
-        text1 = read_file(file1)
-        text2 = read_file(file2)
-        tree1 = ast.parse(text1)
-        tree2 = ast.parse(text2)
+        try:
+            text1 = read_file(file1)
+            text2 = read_file(file2)
+        except FileExistsError:
+            output_file.write("File does not exists")
+        except FileNotFoundError:
+            output_file.write("File not found")
+        except Exception:
+            output_file.write("Could not read the file")
+        try:
+            tree1 = ast.parse(text1)
+            tree2 = ast.parse(text2)
+        except Exception:
+            output_file.write("The code in the file is incorrect")
         text1, text2 = cut_replace_variables(text1, text2)
         text1 = delete_docstrings(tree1, text1)
         text2 = delete_docstrings(tree2, text2)
